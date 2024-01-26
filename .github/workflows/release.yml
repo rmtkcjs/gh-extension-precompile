@@ -1,4 +1,4 @@
-name: Release
+name: release
 
 on:
   push:
@@ -12,10 +12,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - name: Update major release branch
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          tag="${GITHUB_REF#refs/tags/}"
-          major=${tag%%.*}
-          gh api -X PATCH /repos/"$GITHUB_REPOSITORY"/git/refs/heads/"$major" -f sha="$GITHUB_SHA"
+      - uses: actions/checkout@v3
+      - uses: cli/gh-extension-precompile@v1
+        with:
+          go_version: "1.16"
